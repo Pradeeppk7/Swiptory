@@ -5,17 +5,19 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const authRouter = require('./routes/authRoute');
 const storyRouter = require('./routes/storyRoute');
+const morgan = require('morgan');
 
 const app = express();
-
+app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 dotenv.config();
 
+
 app.get('/health', (req, res) => {
-  const dbStatus =
+    const dbStatus =
     mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected';
 
   res.status(200).json({
@@ -23,6 +25,10 @@ app.get('/health', (req, res) => {
     database: dbStatus,
   });
 });
+
+const api = process.env.API_URL;
+app.use(`${api}/user`, authRouter);
+
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
@@ -47,5 +53,6 @@ app.listen(process.env.PORT, () => {
     })
     .catch((err) => console.log(err));
 });
+
 
 module.exports = app;
