@@ -11,7 +11,20 @@ const userSchema = new Schema({
     type: String,
     required: [true, "Password is required"],
   },
+  bookmarks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Story",
+    },
+  ],
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Story",
+    },
+  ],
 });
+
 
 const userModel = mongoose.model("User", userSchema);
 

@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const authRouter = require('./routes/authRoute');
 const storyRouter = require('./routes/storyRoute');
+const userRouter = require('./routes/userRoute')
 const morgan = require('morgan');
 
 const app = express();
@@ -27,7 +28,9 @@ app.get('/health', (req, res) => {
 });
 
 const api = process.env.API_URL;
-app.use(`${api}/user`, authRouter);
+app.use(`${api}/auth`, authRouter);
+app.use(`${api}/user`, userRouter);
+app.use(`${api}/story`, storyRouter);
 
 
 app.use((req, res, next) => {
